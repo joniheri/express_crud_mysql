@@ -71,6 +71,7 @@ exports.addTest = async (req, res) => {
     res.send({
       status: "Respon success",
       message: "Add data Successfully",
+      viewDataWillAdd: body,
       viewDatasAfterAdd: tests,
     });
   } catch (error) {
@@ -125,7 +126,7 @@ exports.updateTest = async (req, res) => {
       status: "Respon success",
       message: "Update data Successfully",
       viewDataWillUpdate: findData,
-      viewDatasNewUpdate: tests,
+      viewDatasAfterUpdate: tests,
     });
   } catch (error) {
     console.log(error);
@@ -178,7 +179,7 @@ exports.deleteTest = async (req, res) => {
       status: "Respon success",
       message: "Delete data Successfully!",
       viewDataWillDelete: findData,
-      viewDatasNewUpdate: tests,
+      viewDatasAfterDelete: tests,
     });
   } catch (error) {
     console.log(error);

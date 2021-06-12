@@ -14,7 +14,7 @@ const {
 // make test router
 router.get("/testdatas", getTestDatas);
 router.get("/testdata/:id", getTestData);
-router.post("/testdata/", postTestData);
+router.post("/testdatas/", postTestData);
 router.patch("/testdata/:id", patchTestData);
 router.delete("/testdata/:id", deleteTestData);
 // end make test router
