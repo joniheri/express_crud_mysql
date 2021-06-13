@@ -36,4 +36,23 @@ router.patch("/updatetest/:id", updateTest);
 router.delete("/deletetest/:id", deleteTest);
 // end make tb_test router
 
+//import tbUser router/url
+const {
+  getUsers,
+  detailUser,
+  addUser,
+  updateUser,
+  deleteUser,
+  getUsersRelationToKTP,
+} = require("../controllers/tbUser");
+
+// make tbUser router
+router.get("/users", getUsers);
+router.get("/detailuser/:id", detailUser);
+router.post("/adduser", addUser);
+router.patch("/updateuser/:id", updateUser);
+router.delete("/deleteuser/:id", deleteUser);
+router.get("/usertoktp", getUsersRelationToKTP);
+// end make tbUser router
+
 module.exports = router;
