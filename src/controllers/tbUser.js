@@ -1,4 +1,4 @@
-const { user, ktp } = require("../../models");
+const { user, ktp, product } = require("../../models");
 
 // GetUsers
 exports.getUsers = async (req, res) => {
@@ -193,12 +193,42 @@ exports.deleteUser = async (req, res) => {
 // EndDeleteData
 
 // GetUsersRelationToKTP
-exports.getUsersRelationToKTP = async (req, res) => {
+exports.getUsersToKTP = async (req, res) => {
   try {
     const findDatas = await user.findAll({
       include: {
         model: ktp,
         as: "ktp",
+        attributes: {
+          exclude: ["createdAt", "updatedAt"],
+        },
+      },
+      attributes: {
+        exclude: ["createdAt", "updatedAt"],
+      },
+    });
+    res.send({
+      status: "Respon success",
+      message: "Test data Successfully get",
+      viewData: findDatas,
+    });
+  } catch (error) {
+    console.log(error);
+    res.send({
+      status: "Respon failed",
+      message: "View Test data Failed!",
+    });
+  }
+};
+// EndGetUsersRelationToKTP
+
+// GetUsersRelationToProduct
+exports.getUsersToProduct = async (req, res) => {
+  try {
+    const findDatas = await user.findAll({
+      include: {
+        model: product,
+        as: "product",
         attributes: {
           exclude: ["createdAt", "updatedAt"],
         },

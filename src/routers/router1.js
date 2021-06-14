@@ -43,7 +43,8 @@ const {
   addUser,
   updateUser,
   deleteUser,
-  getUsersRelationToKTP,
+  getUsersToKTP,
+  getUsersToProduct,
 } = require("../controllers/tbUser");
 
 // make tbUser router
@@ -52,7 +53,29 @@ router.get("/detailuser/:id", detailUser);
 router.post("/adduser", addUser);
 router.patch("/updateuser/:id", updateUser);
 router.delete("/deleteuser/:id", deleteUser);
-router.get("/usertoktp", getUsersRelationToKTP);
+router.get("/usertoktp", getUsersToKTP);
+router.get("/usertoproduct", getUsersToProduct);
 // end make tbUser router
+
+//import tbKTP router/url
+const { getKTPToUser } = require("../controllers/tbKtp");
+
+// make tbKTP router
+router.get("/ktptouser", getKTPToUser);
+// end make tbKTP router
+
+//import tbProduct router/url
+const { getProductToUser } = require("../controllers/tbProduct");
+
+// make tbProduct router
+router.get("/producttouser", getProductToUser);
+// end make tbProduct router
+
+//import tbTransaksi router/url
+const { getUserTransaction } = require("../controllers/tbTransaction");
+
+// make tbTransaksi router
+router.get("/usertransaction", getUserTransaction);
+// end make tbTransaksi router
 
 module.exports = router;
