@@ -2,6 +2,12 @@
 const express = require("express");
 const router = express.Router();
 
+// Auth
+const { register } = require("../controllers/auth");
+
+router.post("/register", register);
+// endAuth
+
 //import testData router/url
 const {
   getTestDatas,
@@ -72,10 +78,14 @@ router.get("/producttouser", getProductToUser);
 // end make tbProduct router
 
 //import tbTransaksi router/url
-const { getUserTransaction } = require("../controllers/tbTransaction");
+const {
+  getUserTransaction,
+  getUserOrder,
+} = require("../controllers/tbTransaction");
 
 // make tbTransaksi router
 router.get("/usertransaction", getUserTransaction);
+router.get("/userorder", getUserOrder);
 // end make tbTransaksi router
 
 module.exports = router;
