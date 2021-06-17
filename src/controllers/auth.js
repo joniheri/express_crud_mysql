@@ -1,6 +1,7 @@
 const { user } = require("../../models");
 const joi = require("joi");
 const bcrypt = require("bcrypt");
+const jwt = require("jsonwebtoken");
 
 // Register
 exports.register = async (req, res) => {
@@ -121,40 +122,47 @@ exports.login = async (req, res) => {
     }
     // end check "password user" is exist
 
-    // check "email & password user" is match
-    const findEmailPassword = await user.findOne({
-      where: {
-        email: email,
-        password: "true",
+    // make token
+    const secretKey = "jonheri";
+    const token = jwt.sign(
+      {
+        id: findEmail.id,
       },
-      attributes: {
-        exclude: ["createdAt", "updatedAt"],
-      },
-    });
-    if (!findEmailPassword) {
-      return res.send({
-        status: "Failed",
-        // message: `Email: ${email} and Password: ${password} not match`,
-        message: `Email and Password not match`,
-      });
-    }
-    // end check "email & password user" is match
+      secretKey
+    );
+    // end make token
+
+    // // check "email & password user" is match
+    // const findEmailPassword = await user.findOne({
+    //   where: {
+    //     email: email,
+    //     password: findEmail.password,
+    //   },
+    //   attributes: {
+    //     exclude: ["createdAt", "updatedAt"],
+    //   },
+    // });
+    // if (!findEmailPassword) {
+    //   return res.send({
+    //     status: "Failed",
+    //     message: `Email and Password not match`,
+    //     findPassword,
+    //   });
+    // }
+    // // end check "email & password user" is match
 
     res.send({
       status: "Respon Success",
       message: "Login Success",
       dataEmailPassword: {
-        findEmailPassword,
-        // email: findEmailPassword.email,
-        // password: findEmailPassword.password,
+        token,
       },
-      passordBycriptCompare: passwordBcrypt,
     });
   } catch (error) {
     console.log(error);
     res.send({
       status: "Respon failed",
-      message: "Register Failed!" + error,
+      message: "Login Failed!" + error,
     });
   }
 };
