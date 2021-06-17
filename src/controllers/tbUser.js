@@ -59,9 +59,9 @@ exports.detailUser = async (req, res) => {
 // AddData
 exports.addUser = async (req, res) => {
   try {
-    const { body } = req;
+    const dataBody = req.body;
 
-    await user.create(body); //-->this is sintak add data
+    await user.create(dataBody); //-->this is sintak add data
 
     const findDatas = await user.findAll({
       attributes: {

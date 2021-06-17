@@ -5,16 +5,15 @@ const bcrypt = require("bcrypt");
 // Register
 exports.register = async (req, res) => {
   try {
-    const data = req.body;
+    const dataBody = req.body;
     const { email, password } = req.body;
 
     const schema = joi.object({
-      username: joi.string().min(6).required(),
       email: joi.string().email().min(8).required(),
       password: joi.string().min(6).required(),
     });
 
-    const { error } = schema.validate(data);
+    const { error } = schema.validate(dataBody);
 
     if (error) {
       return res.send({
@@ -48,7 +47,7 @@ exports.register = async (req, res) => {
 
     // imput data to database
     const dataUser = await user.create({
-      ...data,
+      ...dataBody,
       password: hashedPassword,
     });
     //  end imput data to database
@@ -71,3 +70,92 @@ exports.register = async (req, res) => {
   }
 };
 // EndRegister
+
+// Login
+exports.login = async (req, res) => {
+  try {
+    const dataBody = req.body;
+    const { email, password } = req.body;
+
+    const schema = joi.object({
+      email: joi.string().email().min(8).required(),
+      password: joi.string().min(6).required(),
+    });
+
+    const { error } = schema.validate(dataBody);
+
+    if (error) {
+      return res.send({
+        status: "Validate Failed",
+        message: error.details[0].message,
+      });
+    }
+
+    // check "email user" is exist
+    const findEmail = await user.findOne({
+      where: {
+        email: email,
+      },
+      attributes: {
+        exclude: ["createdAt", "updatedAt"],
+      },
+    });
+    if (!findEmail) {
+      return res.send({
+        status: "Failed",
+        // message: `Email: ${email} not found`,
+        message: `Email or Password your entered is not found`,
+      });
+    }
+    // end check "email user" is exist
+
+    // check "password user" is exist
+    const findPassword = await bcrypt.compare(password, findEmail.password); //--> this is check password in body is macth to password in database
+    if (!findPassword) {
+      return res.send({
+        status: "Failed",
+        // message: `Password: ${password} not found`,
+        message: `Email or Password your entered is not found`,
+        passwordBycript: findPassword,
+      });
+    }
+    // end check "password user" is exist
+
+    // check "email & password user" is match
+    const findEmailPassword = await user.findOne({
+      where: {
+        email: email,
+        password: "true",
+      },
+      attributes: {
+        exclude: ["createdAt", "updatedAt"],
+      },
+    });
+    if (!findEmailPassword) {
+      return res.send({
+        status: "Failed",
+        // message: `Email: ${email} and Password: ${password} not match`,
+        message: `Email and Password not match`,
+      });
+    }
+    // end check "email & password user" is match
+
+    res.send({
+      status: "Respon Success",
+      message: "Login Success",
+      dataEmailPassword: {
+        findEmailPassword,
+        // email: findEmailPassword.email,
+        // password: findEmailPassword.password,
+      },
+      passordBycriptCompare: passwordBcrypt,
+    });
+  } catch (error) {
+    console.log(error);
+    res.send({
+      status: "Respon failed",
+      message: "Register Failed!" + error,
+    });
+  }
+};
+// EndLogin
