@@ -154,9 +154,13 @@ exports.login = async (req, res) => {
     res.send({
       status: "Respon Success",
       message: "Login Success",
-      dataEmailPassword: {
-        token,
+      data: {
+        username: findEmail.username,
+        email: findEmail.email,
+        password: findEmail.password,
+        password: findPassword,
       },
+      token,
     });
   } catch (error) {
     console.log(error);

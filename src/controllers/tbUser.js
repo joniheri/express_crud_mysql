@@ -225,6 +225,8 @@ exports.getUsersToKTP = async (req, res) => {
 // GetUsersRelationToProduct
 exports.getUsersToProduct = async (req, res) => {
   try {
+    const { idUser } = req;
+
     const findDatas = await user.findAll({
       include: {
         model: product,
@@ -239,7 +241,8 @@ exports.getUsersToProduct = async (req, res) => {
     });
     res.send({
       status: "Respon success",
-      message: "Test data Successfully get",
+      message: "Get data Successfully",
+      idUser: idUser,
       viewData: findDatas,
     });
   } catch (error) {

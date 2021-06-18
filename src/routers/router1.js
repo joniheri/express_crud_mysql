@@ -4,11 +4,12 @@ const router = express.Router();
 
 // Auth
 const { register, login } = require("../controllers/auth");
+
 router.post("/register", register);
 router.post("/login", login);
 // endAuth
 
-//import testData router/url
+//test router
 const {
   getTestDatas,
   getTestData,
@@ -17,15 +18,14 @@ const {
   deleteTestData,
 } = require("../controllers/testData");
 
-// make test router
 router.get("/testdatas", getTestDatas);
 router.get("/testdata/:id", getTestData);
 router.post("/testdatas/", postTestData);
 router.patch("/testdata/:id", patchTestData);
 router.delete("/testdata/:id", deleteTestData);
-// end make test router
+// end test router
 
-//import tb_test router/url
+//tb_test router
 const {
   tests,
   detailTest,
@@ -34,15 +34,14 @@ const {
   deleteTest,
 } = require("../controllers/tbTest");
 
-// make tb_test router
 router.get("/test", tests);
 router.get("/detailtest/:id", detailTest);
 router.post("/addtest", addTest);
 router.patch("/updatetest/:id", updateTest);
 router.delete("/deletetest/:id", deleteTest);
-// end make tb_test router
+// end tb_test router
 
-//import tbUser router/url
+//tbUser router
 const {
   getUsers,
   detailUser,
@@ -53,7 +52,6 @@ const {
   getUsersToProduct,
 } = require("../controllers/tbUser");
 
-// make tbUser router
 router.get("/users", getUsers);
 router.get("/detailuser/:id", detailUser);
 router.post("/adduser", addUser);
@@ -61,31 +59,34 @@ router.patch("/updateuser/:id", updateUser);
 router.delete("/deleteuser/:id", deleteUser);
 router.get("/usertoktp", getUsersToKTP);
 router.get("/usertoproduct", getUsersToProduct);
-// end make tbUser router
+// end tbUser router
 
-//import tbKTP router/url
+//tbKTP router
 const { getKTPToUser } = require("../controllers/tbKtp");
 
-// make tbKTP router
 router.get("/ktptouser", getKTPToUser);
-// end make tbKTP router
+// end tbKTP router
 
-//import tbProduct router/url
+// tbProduct router
 const { getProductToUser } = require("../controllers/tbProduct");
 
-// make tbProduct router
 router.get("/producttouser", getProductToUser);
-// end make tbProduct router
+// end tbProduct router
 
-//import tbTransaksi router/url
+//make tbTransaksi router
 const {
   getUserTransaction,
   getUserOrder,
 } = require("../controllers/tbTransaction");
 
-// make tbTransaksi router
 router.get("/usertransaction", getUserTransaction);
 router.get("/userorder", getUserOrder);
 // end make tbTransaksi router
+
+// middleware auth
+const { authMiddle } = require("../middleware/authMiddle");
+
+router.get("/usertoproductmiddleaut", authMiddle, getUsersToProduct);
+// middleware auth
 
 module.exports = router;

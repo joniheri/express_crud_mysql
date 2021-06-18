@@ -17,7 +17,7 @@ exports.getProductToUser = async (req, res) => {
     });
     res.send({
       status: "Respon success",
-      message: "Test data Successfully get",
+      message: "Get data Successfully",
       viewData: findDatas,
     });
   } catch (error) {
